@@ -1,21 +1,16 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 import pika
 import sys
 
-import os
-hostname= os.environ['RABBIT_HOST'] if 'RABBIT_HOST' in os.environ else 'localhost'
-
-connection = pika.BlockingConnection(pika.ConnectionParameters(
-        host=hostname))
+connection = pika.BlockingConnection(
+    pika.ConnectionParameters(host='localhost'))
 channel = connection.channel()
 
-channel.exchange_declare(exchange='direct_logs',
-                         type='direct')
+channel.exchange_declare(exchange='direct_logs', exchange_type='direct')
 
-severity = sys.argv[1] if len(sys.argv) > 1 else 'info'
+severity = sys.argv[1] if len(sys.argv) > 2 else 'info'
 message = ' '.join(sys.argv[2:]) or 'Hello World!'
-channel.basic_publish(exchange='direct_logs',
-                      routing_key=severity,
-                      body=message)
-print " [x] Sent %r:%r" % (severity, message)
+channel.basic_publish(
+    exchange='direct_logs', routing_key=severity, body=message)
+print(" [x] Sent %r:%r" % (severity, message))
 connection.close()
