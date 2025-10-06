@@ -7,7 +7,7 @@ parser = argparse.ArgumentParser(
   description='Sends n hello world messages so the effect of not ' +
     'acknowledging messages can be seen.')
 parser.add_argument('n', type=int, help='Number of messages to send') 
-parser.add_argument('--message', type=str,
+parser.add_argument('--message', type=str, default="Hello World!",
   help="Message to send.")
 FLAGS = parser.parse_args()
 
